@@ -1,5 +1,5 @@
 {
-  "name": "library-tpl",
+  "name": "@jujulego/utils",
   "version": "1.0.0",
   "license": "MIT",
   "author": "Julien Capellari <julien.capellari@gmail.com>",
@@ -31,6 +31,9 @@
     "test": "jest"
   },
   "packageManager": "yarn@3.4.1",
+  "dependencies": {
+    "@jujulego/event-tree": "^1.1.1"
+  },
   "devDependencies": {
     "@jujulego/flow": "1.1.0",
     "@swc/cli": "0.1.61",
