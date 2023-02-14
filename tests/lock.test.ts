@@ -35,3 +35,29 @@ describe('Lock', () => {
     expect(lock.locked).toBe(true);
   });
 });
+
+describe('Lock.with', () => {
+  it('should acquire before calling fn and release it after', async () => {
+    const fn = jest.fn(() => {
+      expect(lock.locked).toBe(true);
+      return 'test';
+    });
+
+    await expect(lock.with(fn)).resolves.toBe('test');
+
+    expect(fn).toHaveBeenCalled();
+    expect(lock.locked).toBe(false);
+  });
+
+  it('should release lock if fn fails', async () => {
+    const fn = jest.fn(() => {
+      expect(lock.locked).toBe(true);
+      throw new Error('failed');
+    });
+
+    await expect(lock.with(fn)).rejects.toEqual(new Error('failed'));
+
+    expect(fn).toHaveBeenCalled();
+    expect(lock.locked).toBe(false);
+  });
+});
