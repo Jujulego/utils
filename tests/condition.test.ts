@@ -1,13 +1,13 @@
-import { EventGroupListener } from '@jujulego/event-tree';
+import { Listener } from '@jujulego/event-tree';
 import util from 'util';
 
-import { Condition, ConditionEventMap } from '../src/condition';
+import { Condition } from '../src';
 
 // Setup
 let value: number;
 let condition: Condition;
 
-let resultSpy: EventGroupListener<ConditionEventMap, 'result'>;
+let resultSpy: Listener<boolean>;
 
 beforeEach(() => {
   // Initiate
@@ -16,7 +16,7 @@ beforeEach(() => {
 
   // Events
   resultSpy = jest.fn();
-  condition.subscribe('result', resultSpy);
+  condition.subscribe(resultSpy);
 });
 
 // Tests
@@ -34,7 +34,7 @@ describe('Condition.check', () => {
     expect(condition.value).toBe(true);
 
     expect(resultSpy).toHaveBeenCalledTimes(1);
-    expect(resultSpy).toHaveBeenCalledWith(true, { key: 'result.true', origin: condition });
+    expect(resultSpy).toHaveBeenCalledWith(true);
   });
 
   it('should recompute value and emit event (=> false)', () => {
@@ -44,7 +44,7 @@ describe('Condition.check', () => {
     expect(condition.value).toBe(false);
 
     expect(resultSpy).toHaveBeenCalledTimes(1);
-    expect(resultSpy).toHaveBeenCalledWith(false, { key: 'result.false', origin: condition });
+    expect(resultSpy).toHaveBeenCalledWith(false);
   });
 });
 
