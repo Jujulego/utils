@@ -23,6 +23,16 @@ export type QueryEventMap<D> = {
   'failed': QueryStateFailed,
 }
 
+// Utils
+function callbackify<T>(prom: T | PromiseLike<T>, query: Query<T>) {
+  if (prom && typeof prom === 'object' && 'then' in prom) {
+    prom.then((res) => query.done(res), (err) => query.fail(err));
+  } else {
+    query.done(prom);
+  }
+}
+
+// Class
 /**
  * Represents a data query.
  *
@@ -53,12 +63,12 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
   ): Query<RF | RR> {
     const result = new Query<RF | RR>();
 
-    const listener = async (state: QueryState<D>) => {
+    const listener = (state: QueryState<D>) => {
       try {
         switch (state.status) {
           case 'done':
             if (onFulfilled) {
-              result.done(await onFulfilled(state.data));
+              callbackify(onFulfilled(state.data), result);
             } else {
               result.done(state.data as unknown as RF);
             }
@@ -67,7 +77,7 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
 
           case 'failed':
             if (onRejected) {
-              result.done(await onRejected(state.error));
+              callbackify(onRejected(state.error), result);
             } else {
               result.fail(state.error);
             }
@@ -82,7 +92,7 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
     if (this._state.status === 'pending') {
       once(this, listener);
     } else {
-      // microtask here allows listening on result query events
+      // Gives time to subscribe to result query
       queueMicrotask(() => listener(this._state));
     }
 
