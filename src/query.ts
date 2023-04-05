@@ -1,4 +1,4 @@
-import { group, IListenable, IObservable, source } from '@jujulego/event-tree';
+import { group, IListenable, IObservable, once, source } from '@jujulego/event-tree';
 
 // Types
 export interface QueryStatePending {
@@ -33,7 +33,7 @@ export type QueryEventMap<D> = {
  *
  * An event is emitted when the query's status changes, with the new query state in the payload.
  */
-export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObservable<QueryStateDone<D> | QueryStateFailed> {
+export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObservable<QueryStateDone<D> | QueryStateFailed>, PromiseLike<D> {
   // Attributes
   private _state: QueryState<D> = { status: 'pending' };
   private _events = group({
@@ -46,6 +46,48 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
   off = this._events.off;
   subscribe = this._events.subscribe;
   unsubscribe = this._events.unsubscribe;
+
+  then<RF = D, RR = never>(
+    onFulfilled?: ((value: D) => PromiseLike<RF> | RF) | null,
+    onRejected?: ((reason: Error) => PromiseLike<RR> | RR) | null,
+  ): Query<RF | RR> {
+    const result = new Query<RF | RR>();
+
+    const listener = async (state: QueryState<D>) => {
+      try {
+        switch (state.status) {
+          case 'done':
+            if (onFulfilled) {
+              result.done(await onFulfilled(state.data));
+            } else {
+              result.done(state.data as unknown as RF);
+            }
+
+            break;
+
+          case 'failed':
+            if (onRejected) {
+              result.done(await onRejected(state.error));
+            } else {
+              result.fail(state.error);
+            }
+
+            break;
+        }
+      } catch (err) {
+        result.fail(err);
+      }
+    };
+
+    if (this._state.status === 'pending') {
+      once(this, listener);
+    } else {
+      // microtask here allows listening on result query events
+      queueMicrotask(() => listener(this._state));
+    }
+
+    return result;
+  }
 
   /**
    * Mark query as done, and store its result
@@ -95,4 +137,18 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
   get error(): Error | undefined {
     return this._state.status === 'failed' ? this._state.error : undefined;
   }
+}
+
+// Utils
+/**
+ * Builds a query from a given promise.
+ * Query will be done when promise resolves, and failed when promise rejects
+ *
+ * @param promise
+ */
+export function $queryfy<D>(promise: PromiseLike<D>): Query<D> {
+  const query = new Query<D>();
+  promise.then((data) => query.done(data), (error) => query.fail(error));
+
+  return query;
 }
