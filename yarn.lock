@@ -881,9 +881,9 @@ __metadata:
   linkType: hard
 
 "@jujulego/event-tree@npm:^2.0.0":
-  version: 2.2.0
-  resolution: "@jujulego/event-tree@npm:2.2.0"
-  checksum: 40149103c9d90570fecb31668e54e9ad226c8cc9def006c7285cbd06f96ed905aa439d14b16b14be7d868e430fb4f5e3e9f16243626379f201ac59a3ee66d259
+  version: 2.3.0
+  resolution: "@jujulego/event-tree@npm:2.3.0"
+  checksum: c34ad6df2efa0b4aff005a95ec3e1021f549f692248a96ab7dbb392f278acfbfb7006b5907a535a5559918916a30ab2cda803a8b3ffcd620c2435c3b867412b7
   languageName: node
   linkType: hard
 
