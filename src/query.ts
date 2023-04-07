@@ -19,8 +19,8 @@ export type QueryState<D = unknown> = QueryStatePending | QueryStateDone<D> | Qu
 export type QueryStatus = QueryState['status'];
 
 export type QueryEventMap<D> = {
-  'done': QueryStateDone<D>,
-  'failed': QueryStateFailed,
+  done: QueryStateDone<D>;
+  failed: QueryStateFailed;
 }
 
 // Utils
@@ -46,22 +46,31 @@ function callbackify<T>(prom: T | PromiseLike<T>, query: Query<T>) {
 export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObservable<QueryStateDone<D> | QueryStateFailed>, PromiseLike<D> {
   // Attributes
   private _state: QueryState<D> = { status: 'pending' };
+
   private _events = group({
     'done': source<QueryStateDone<D>>(),
     'failed': source<QueryStateFailed>(),
   });
 
+  // Constructor
+  constructor(
+    readonly controller = new AbortController(),
+  ) {
+    controller.signal.addEventListener('abort', () => this._events.clear());
+  }
+
   // Methods
-  on = this._events.on;
-  off = this._events.off;
-  subscribe = this._events.subscribe;
-  unsubscribe = this._events.unsubscribe;
+  readonly on = this._events.on;
+  readonly off = this._events.off;
+  readonly subscribe = this._events.subscribe;
+  readonly unsubscribe = this._events.unsubscribe;
+  readonly clear = this._events.clear;
 
   then<RF = D, RR = never>(
     onFulfilled?: ((value: D) => PromiseLike<RF> | RF) | null,
     onRejected?: ((reason: Error) => PromiseLike<RR> | RR) | null,
   ): Query<RF | RR> {
-    const result = new Query<RF | RR>();
+    const result = new Query<RF | RR>(this.controller);
 
     const listener = (state: QueryState<D>) => {
       try {
@@ -119,6 +128,16 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
     this._events.emit('failed', this._state);
   }
 
+  /**
+   * Cancel query using its AbortController.
+   * Also clear all listeners.
+   *
+   * @param reason
+   */
+  cancel(reason?: Error): void {
+    this.controller.abort(reason);
+  }
+
   // Properties
   /**
    * Current state of query
@@ -155,9 +174,10 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
  * Query will be done when promise resolves, and failed when promise rejects
  *
  * @param promise
+ * @param controller
  */
-export function $queryfy<D>(promise: PromiseLike<D>): Query<D> {
-  const query = new Query<D>();
+export function $queryfy<D>(promise: PromiseLike<D>, controller?: AbortController): Query<D> {
+  const query = new Query<D>(controller);
   promise.then((data) => query.done(data), (error) => query.fail(error));
 
   return query;
