@@ -1,7 +1,13 @@
 import { group, IListenable, IObservable, source, waitFor } from '@jujulego/event-tree';
 
+// Types
+export type ConditionEventMap = {
+  true: true;
+  false: false;
+};
+
 // Class
-export class Condition implements IObservable<boolean>, IListenable<{ 'true': true, 'false': false }> {
+export class Condition implements IObservable<boolean>, IListenable<ConditionEventMap> {
   // Attributes
   private _value: boolean;
   private _events = group({
@@ -15,10 +21,11 @@ export class Condition implements IObservable<boolean>, IListenable<{ 'true': tr
   }
 
   // Methods
-  on = this._events.on;
-  off = this._events.off;
-  subscribe = this._events.subscribe;
-  unsubscribe = this._events.unsubscribe;
+  readonly on = this._events.on;
+  readonly off = this._events.off;
+  readonly subscribe = this._events.subscribe;
+  readonly unsubscribe = this._events.unsubscribe;
+  readonly clear = this._events.clear;
 
   check(): void {
     this._value = this.condition();
