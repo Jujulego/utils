@@ -32,6 +32,13 @@ describe('new Query', () => {
     expect(query.data).toBeUndefined();
     expect(query.error).toBeUndefined();
   });
+
+  it('should use given AbortController', () => {
+    const ctrl = new AbortController();
+    const query = new Query(ctrl);
+
+    expect(query.controller).toBe(ctrl);
+  });
 });
 
 describe('Query.done', () => {
@@ -89,6 +96,12 @@ describe('Query.fail', () => {
 });
 
 describe('Query.then', () => {
+  it('should pass original controller to created query', () => {
+    const created = query.then();
+
+    expect(created.controller).toBe(query.controller);
+  });
+
   describe('pending => done', () => {
     it('should resolve to result', async () => {
       setTimeout(() => query.done(42));
@@ -587,5 +600,18 @@ describe('Query.then', () => {
         error: new Error('Wrong life purpose'),
       });
     });
+  });
+});
+
+describe('Query.cancel', () => {
+  it('should call abort on controller', () => {
+    const err = new Error('Cancel !');
+    jest.spyOn(query.controller, 'abort');
+
+    query.cancel(err);
+    expect(query.controller.abort).toHaveBeenCalledWith(err);
+
+    query.done(42);
+    expect(resultSpy).not.toHaveBeenCalled();
   });
 });
