@@ -176,7 +176,11 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
  * @param promise
  * @param controller
  */
-export function $queryfy<D>(promise: PromiseLike<D>, controller?: AbortController): Query<D> {
+export function queryfy<D>(promise: PromiseLike<D>, controller?: AbortController): Query<D> {
+  if (promise instanceof Query) {
+    return promise;
+  }
+
   const query = new Query<D>(controller);
   promise.then((data) => query.done(data), (error) => query.fail(error));
 
