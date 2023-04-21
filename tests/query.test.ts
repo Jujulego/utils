@@ -1,6 +1,6 @@
 import { Listener } from '@jujulego/event-tree';
 
-import { Query, QueryState, QueryStateDone, QueryStateFailed } from '../src';
+import { Query, QueryState, QueryStateDone, QueryStateFailed } from '@/src/query';
 
 // Utils
 async function flushPromises() {

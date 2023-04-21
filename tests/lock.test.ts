@@ -1,6 +1,6 @@
 import util from 'node:util';
 
-import { Lock } from '../src';
+import { Lock } from '@/src/lock';
 
 // Setup
 let lock: Lock;

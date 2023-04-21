@@ -1,7 +1,7 @@
 import { Listener } from '@jujulego/event-tree';
 import util from 'util';
 
-import { Condition } from '../src';
+import { Condition } from '@/src/condition';
 
 // Setup
 let value: number;
