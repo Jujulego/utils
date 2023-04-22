@@ -32,23 +32,14 @@ export class Queue<T> implements AsyncIterable<T> {
   pop(opts?: { sync?: false }): Promise<T>;
   pop(opts: { sync: true }): T | undefined;
   pop(opts: { sync?: boolean } = {}): Promise<T> | T | undefined {
-    if (opts.sync) {
-      return this._popSync();
-    } else {
-      return this._popAsync();
-    }
+    return opts.sync ? this._popSync() : this._popAsync();
   }
 
   [Symbol.iterator](): Iterator<T, void> {
     return {
       next: (): IteratorResult<T, void> => {
         const value = this._items.pop();
-
-        if (value === undefined) {
-          return { done: true, value: undefined };
-        }
-
-        return { value };
+        return value === undefined ? { done: true, value: undefined } : { value };
       }
     };
   }
