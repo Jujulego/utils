@@ -2,6 +2,8 @@ import { BST } from './bst';
 import { Condition } from './condition';
 
 // Types
+export type PriorityOrder = 'highest' | 'lowest';
+
 interface PQItem<T> {
   priority: number;
   data: T;
@@ -10,8 +12,19 @@ interface PQItem<T> {
 // Class
 export class PriorityQueue<T> implements AsyncIterable<T> {
   // Attributes
-  private readonly _items = BST.empty((item: PQItem<T>) => item.priority, (a, b) => a - b);
-  private readonly _hasItems = new Condition(() => this._items.length > 0);
+  private readonly _items: BST<PQItem<T>, number>;
+  private readonly _hasItems: Condition;
+
+  // Constructor
+  constructor(order: PriorityOrder = 'highest') {
+    if (order === 'lowest') {
+      this._items = BST.empty((item: PQItem<T>) => item.priority, (a, b) => b - a);
+    } else {
+      this._items = BST.empty((item: PQItem<T>) => item.priority, (a, b) => a - b);
+    }
+
+    this._hasItems = new Condition(() => this._items.length > 0);
+  }
 
   // Methods
   insert(data: T, priority = 0): void {
@@ -55,5 +68,10 @@ export class PriorityQueue<T> implements AsyncIterable<T> {
     return {
       next: async (): Promise<IteratorResult<T, void>> => ({ value: await this.pop() }),
     };
+  }
+
+  // Attributes
+  get length(): number {
+    return this._items.length;
   }
 }
