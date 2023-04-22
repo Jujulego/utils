@@ -19,7 +19,11 @@ export class PriorityQueue<T> implements AsyncIterable<T> {
     this._hasItems.check();
   }
 
-  async pop(): Promise<T> {
+  private _popSync(): T | undefined {
+    return this._items.pop()?.data;
+  }
+
+  private async _popAsync(): Promise<T> {
     let item = this._items.pop();
 
     while (!item) {
@@ -30,6 +34,21 @@ export class PriorityQueue<T> implements AsyncIterable<T> {
     this._hasItems.check();
 
     return item.data;
+  }
+
+  pop(opts?: { sync?: false }): Promise<T>;
+  pop(opts: { sync: true }): T | undefined;
+  pop(opts: { sync?: boolean } = {}): Promise<T> | T | undefined {
+    return opts.sync ? this._popSync() : this._popAsync();
+  }
+
+  [Symbol.iterator](): Iterator<T, void> {
+    return {
+      next: (): IteratorResult<T, void> => {
+        const value = this._items.pop()?.data;
+        return value === undefined ? { done: true, value: undefined } : { value };
+      }
+    };
   }
 
   [Symbol.asyncIterator](): AsyncIterator<T, void> {
