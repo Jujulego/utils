@@ -1,6 +1,6 @@
 import { Listener } from '@jujulego/event-tree';
 
-import { Query, QueryState, QueryStateDone, QueryStateFailed } from '@/src/query';
+import { Query, queryfy, QueryState, QueryStateDone, QueryStateFailed } from '@/src/query';
 
 // Utils
 async function flushPromises() {
@@ -613,5 +613,35 @@ describe('Query.cancel', () => {
 
     query.done(42);
     expect(resultSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('queryfy', () => {
+  it('should return a query wrapping given successful promise', async () => {
+    const prom = new Promise<number>((resolve) => setTimeout(() => resolve(42), 0));
+    const query = queryfy(prom);
+
+    await prom;
+
+    expect(query.state).toEqual({
+      status: 'done',
+      data: 42,
+    });
+  });
+
+  it('should return a query wrapping given failing promise', async () => {
+    const prom = new Promise<number>((_, reject) => setTimeout(() => reject(new Error('Failed !')), 0));
+    const query = queryfy(prom);
+
+    await prom.catch(() => null);
+
+    expect(query.state).toEqual({
+      status: 'failed',
+      error: new Error('Failed !'),
+    });
+  });
+
+  it('should return given query', () => {
+    expect(queryfy(query)).toBe(query);
   });
 });
