@@ -9,6 +9,14 @@ beforeEach(() => {
 });
 
 // Tests suites
+describe('BST.copy', () => {
+  it('should return a copy of the given bst', () => {
+    const copy = BST.copy(bst);
+
+    expect(copy.array).toEqual(bst.array);
+  });
+});
+
 describe('BST.nearest', () => {
   test('lt mode', () => {
     expect(bst.nearest(0, 'lt')).toBeNull();
@@ -197,5 +205,58 @@ describe('BST.removeUntil', () => {
 
     expect(bst.array)
       .toEqual([2, 2, 2, 4, 5]);
+  });
+
+  test('a missing element', () => {
+    expect(bst.removeUntil(42))
+      .toEqual([]);
+
+    expect(bst.array)
+      .toEqual([1, 2, 2, 2, 4, 5]);
+  });
+
+  test('on a empty bst', () => {
+    const bst = BST.empty<number>(n => n, (a, b) => a - b);
+
+    expect(bst.removeUntil(2)).toEqual([]);
+    expect(bst.array).toEqual([]);
+  });
+});
+
+describe('BST.pop', () => {
+  it('should remove & return the last element', () => {
+    expect(bst.pop()).toBe(5);
+    expect(bst.array).toEqual([1, 2, 2, 2, 4]);
+  });
+
+  it('should return null on empty bst', () => {
+    const bst = BST.empty<number>(n => n, (a, b) => a - b);
+
+    expect(bst.pop()).toBeNull();
+    expect(bst.array).toEqual([]);
+  });
+});
+
+describe('BST.filter', () => {
+  it('should return a bst with only even numbers', () => {
+    const res = bst.filter((n) => (n % 2) === 0);
+
+    expect(res.array).toEqual([2, 2, 2, 4]);
+  });
+});
+
+describe('BST.map', () => {
+  it('should return an array with mapped elements', () => {
+    const res = bst.map((n) => n * 10);
+
+    expect(res).toEqual([10, 20, 20, 20, 40, 50]);
+  });
+});
+
+describe('BST.reduce', () => {
+  it('should return sum of all elements', () => {
+    const res = bst.reduce((s, n) => s + n, 0);
+
+    expect(res).toBe(16);
   });
 });

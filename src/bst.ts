@@ -31,7 +31,7 @@ export class BST<T, K = T> {
     return new BST<T, K>(extractor, comparator);
   }
 
-  static fromArray<T, K = T>(elements: T[], extractor: ExtractKey<T, K>, comparator: Comparator<K>): BST<T, K> {
+  static from<T, K = T>(elements: Iterable<T> | ArrayLike<T>, extractor: ExtractKey<T, K>, comparator: Comparator<K>): BST<T, K> {
     // Add and sort elements
     const array = Array.from(elements);
     array.sort((a, b) => comparator(extractor(a), extractor(b)));
@@ -39,8 +39,13 @@ export class BST<T, K = T> {
     return new BST<T, K>(extractor, comparator as Comparator<K>, array);
   }
 
+  /** @deprecated use BST.from instead */
+  static fromArray<T, K = T>(elements: readonly T[], extractor: ExtractKey<T, K>, comparator: Comparator<K>): BST<T, K> {
+    return BST.from(elements, extractor, comparator);
+  }
+
   static copy<T, K>(bst: BST<T, K>): BST<T, K> {
-    return this.fromArray(bst._array, bst._extractor, bst._comparator);
+    return new BST<T, K>(bst._extractor, bst._comparator, Array.from(bst));
   }
 
   // Methods
@@ -249,6 +254,7 @@ export class BST<T, K = T> {
 
   /**
    * Removes all elements before the one matching the key (excluded).
+   * If key is not found, nothing is removed
    *
    * @param key
    * @returns removed elements
@@ -259,7 +265,12 @@ export class BST<T, K = T> {
     }
 
     // Search ordered index
-    let [idx,] = this._searchOne(key);
+    // eslint-disable-next-line prefer-const
+    let [idx, elem] = this._searchOne(key);
+
+    if (elem === null) {
+      return [];
+    }
 
     for (; idx > 0; idx--) {
       const obj = this._array[idx];
@@ -284,6 +295,10 @@ export class BST<T, K = T> {
     yield* this._array;
   }
 
+  /**
+   * Returns a new bst with only filtered elements
+   * @param predicate
+   */
   filter(predicate: (elem: T, index: number) => boolean): BST<T, K> {
     const filtered: T[] = [];
 
@@ -295,10 +310,19 @@ export class BST<T, K = T> {
     return new BST(this._extractor, this._comparator, filtered);
   }
 
+  /**
+   * Returns an array with all mapped elements
+   * @param fn
+   */
   map<R>(fn: (elem: T, index: number) => R): R[] {
     return this._array.map(fn);
   }
 
+  /**
+   * Apply given reducer to all elements and return result
+   * @param fn
+   * @param init
+   */
   reduce<R>(fn: (acc: R, elem: T) => R, init: R): R {
     return this._array.reduce(fn, init);
   }
