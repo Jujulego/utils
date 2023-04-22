@@ -12,7 +12,11 @@ export class Queue<T> implements AsyncIterable<T> {
     this._hasItems.check();
   }
 
-  async pop(): Promise<T> {
+  private _popSync(): T | undefined {
+    return this._items.pop();
+  }
+
+  private async _popAsync(): Promise<T> {
     let item = this._items.pop();
 
     while (!item) {
@@ -25,9 +29,38 @@ export class Queue<T> implements AsyncIterable<T> {
     return item;
   }
 
+  pop(opts?: { sync?: false }): Promise<T>;
+  pop(opts: { sync: true }): T | undefined;
+  pop(opts: { sync?: boolean } = {}): Promise<T> | T | undefined {
+    if (opts.sync) {
+      return this._popSync();
+    } else {
+      return this._popAsync();
+    }
+  }
+
+  [Symbol.iterator](): Iterator<T, void> {
+    return {
+      next: (): IteratorResult<T, void> => {
+        const value = this._items.pop();
+
+        if (value === undefined) {
+          return { done: true, value: undefined };
+        }
+
+        return { value };
+      }
+    };
+  }
+
   [Symbol.asyncIterator](): AsyncIterator<T, void> {
     return {
       next: async (): Promise<IteratorResult<T, void>> => ({ value: await this.pop() }),
     };
+  }
+
+  // Attributes
+  get length(): number {
+    return this._items.length;
   }
 }
