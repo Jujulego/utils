@@ -148,8 +148,13 @@ jobs:
       - name: Tag version
         id: tag
         run: |
+          stopMarker=$(uuidgen)
           echo "::group::git fetch --tags"
+          echo "::stop-commands::$stopMarker"
+          
           git fetch --tags
+          
+          echo "::$stopMarker::"
           echo "::endgroup::"
           
           if [[ $(git tag -l $VERSION) == $VERSION ]]; then
