@@ -160,3 +160,11 @@ jobs:
           fi
         env:
           VERSION: v${{ steps.info.outputs.version }}
+
+      - name: Release notes
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ steps.info.outputs.version }}
+          tag_name: v${{ steps.info.outputs.version }}
+          draft: true
+          generate_release_notes: true
