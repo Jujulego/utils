@@ -143,25 +143,30 @@ jobs:
 
       - name: Read package.json
         id: info
-        run: 'echo version=`jq -r ".version" package.json` >> $GITHUB_OUTPUT'
+        run: echo "version=$(jq -r ".version" package.json)" >> $GITHUB_OUTPUT
 
       - name: Tag version
+        id: tag
         run: |
           git fetch --tags
           
           if [[ $(git tag -l $VERSION) == $VERSION ]]; then
             echo "::notice::git tag $VERSION already exists"
+            echo "notes=false" >> $GITHUB_OUTPUT
           else
             git config user.name github-actions
             git config user.email github-actions@github.com
           
             git tag $VERSION
             git push --tags
+          
+            echo "notes=true" >> $GITHUB_OUTPUT
           fi
         env:
           VERSION: v${{ steps.info.outputs.version }}
 
       - name: Release notes
+        if: ${{ steps.tag.outputs.notes }}
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ steps.info.outputs.version }}
