@@ -9,6 +9,9 @@ jobs:
   release-notes:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Read tag
         id: info
