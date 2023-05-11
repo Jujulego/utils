@@ -107,11 +107,38 @@ jobs:
 
       - name: Tag version
         run: |
-          if [[ "$(git tag -l $VERSION)" == "$VERSION" ]]; then
+          if [[ $(git tag -l $VERSION) == $VERSION ]]; then
             echo "::notice::git tag $VERSION already exists"
           else
             git config user.name github-actions
             git config user.email github-actions@github.com
+          
+            git tag $VERSION
+            git push --tags
+          fi
+        env:
+          VERSION: v${{ steps.info.outputs.version }}
+
+  tags:
+    runs-on: ubuntu-latest
+    needs: [ publish ]
+
+    steps:
+      - uses: actions/checkout@v3.5.2
+
+      - name: Read package.json
+        id: info
+        run: 'echo version=`jq -r ".version" package.json` >> $GITHUB_OUTPUT'
+
+      - name: Tag version
+        run: |
+          git fetch --tags
+          
+          if [[ $(git tag -l $VERSION) == $VERSION ]]; then
+            echo "::notice::git tag $VERSION already exists"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
             git tag $VERSION
             git push --tags
