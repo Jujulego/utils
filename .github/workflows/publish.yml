@@ -108,13 +108,13 @@ jobs:
       - name: Tag version
         run: |
           if [[ "$(git tag -l $VERSION)" == "$VERSION" ]]; then
+            echo "::notice::git tag $VERSION already exists"
+          else
             git config user.name github-actions
             git config user.email github-actions@github.com
           
             git tag $VERSION
             git push --tags
-          else
-            echo "::notice::git tag $VERSION already exists"
           fi
         env:
           VERSION: v${{ steps.info.outputs.version }}
