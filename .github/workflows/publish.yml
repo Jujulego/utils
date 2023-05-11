@@ -148,7 +148,9 @@ jobs:
       - name: Tag version
         id: tag
         run: |
+          echo "::group::git fetch --tags"
           git fetch --tags
+          echo "::endgroup::"
           
           if [[ $(git tag -l $VERSION) == $VERSION ]]; then
             echo "::notice::git tag $VERSION already exists"
