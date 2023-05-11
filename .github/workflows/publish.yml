@@ -103,7 +103,7 @@ jobs:
 
       - name: Read package.json
         id: info
-        run: 'echo version=`jq ".version" package.json` >> $GITHUB_OUTPUT'
+        run: 'echo version=`jq -r ".version" package.json` >> $GITHUB_OUTPUT'
 
       - name: Tag version
         run: |
