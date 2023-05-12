@@ -88,7 +88,7 @@ jobs:
 
       - name: Load package.json
         id: info
-        run: 'echo version=`jq ".version" package.json` >> $GITHUB_OUTPUT'
+        run: echo "version=$(jq -r ".version" package.json)" >> $GITHUB_OUTPUT
 
       - name: Sonarcloud
         uses: sonarsource/sonarcloud-github-action@v1.9
