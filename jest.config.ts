@@ -8,7 +8,7 @@ const config: Config = {
     '<rootDir>/tests'
   ],
   transform: {
-    '^.+\\.(t|j)sx?$': '@swc/jest'
+    '^.+\\.(t|j)sx?$': 'ts-jest'
   },
 
   // Coverage
