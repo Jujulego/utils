@@ -7,17 +7,10 @@
     "baseUrl": "./",
     "paths": {
       "@/src": ["./src"],
-      "@/src/*": ["./src/*"],
+      "@/src/*": ["./src/*"]
     }
   },
   "module": {
     "type": "es6"
-  },
-  "env": {
-    "targets": [
-      "defaults",
-      "not ie 11",
-      "maintained node versions and not node < 16"
-    ]
   }
 }
