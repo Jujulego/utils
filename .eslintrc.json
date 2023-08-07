@@ -28,12 +28,8 @@
     },
     {
       "files": "**/*.test.{js,jsx,ts,tsx}",
-      "globals": {
-        "jest/globals": true
-      },
       "extends": [
-        "plugin:jest/recommended",
-        "plugin:jest/style"
+        "plugin:vitest/recommended"
       ]
     }
   ]
