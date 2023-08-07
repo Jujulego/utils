@@ -111,8 +111,8 @@ describe('Query.then', () => {
     });
 
     it('should call onFulfilled callback', () => {
-      const onFulfilled = vi.fn<void, [number]>();
-      const onRejected = vi.fn<void, [Error]>();
+      const onFulfilled = vi.fn<[number], void>();
+      const onRejected = vi.fn<[Error], void>();
       query.then(onFulfilled, onRejected);
 
       query.done(42);
@@ -230,8 +230,8 @@ describe('Query.then', () => {
     it('should call onFulfilled callback', async () => {
       query.done(42);
 
-      const onFulfilled = vi.fn<void, [number]>();
-      const onRejected = vi.fn<void, [Error]>();
+      const onFulfilled = vi.fn<[number], void>();
+      const onRejected = vi.fn<[Error], void>();
       query.then(onFulfilled, onRejected);
 
       await flushPromises();
@@ -361,8 +361,8 @@ describe('Query.then', () => {
     });
 
     it('should call onRejected callback', () => {
-      const onFulfilled = vi.fn<void, [number]>();
-      const onRejected = vi.fn<void, [Error]>();
+      const onFulfilled = vi.fn<[number], void>();
+      const onRejected = vi.fn<[Error], void>();
       query.then(onFulfilled, onRejected);
 
       query.fail(error);
@@ -486,8 +486,8 @@ describe('Query.then', () => {
     it('should call onRejected callback', async () => {
       query.fail(error);
 
-      const onFulfilled = vi.fn<void, [number]>();
-      const onRejected = vi.fn<void, [Error]>();
+      const onFulfilled = vi.fn<[number], void>();
+      const onRejected = vi.fn<[Error], void>();
       query.then(onFulfilled, onRejected);
 
       await flushPromises();
