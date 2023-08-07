@@ -427,7 +427,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jujulego/event-tree@npm:^4.0.0":
+"@jujulego/event-tree@npm:^4.0.1":
   version: 4.0.1
   resolution: "@jujulego/event-tree@npm:4.0.1"
   dependenciesMeta:
@@ -450,7 +450,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jujulego/utils@workspace:."
   dependencies:
-    "@jujulego/event-tree": ^4.0.0
+    "@jujulego/event-tree": ^4.0.1
     "@jujulego/flow": 1.1.0
     "@microsoft/eslint-formatter-sarif": 3.0.0
     "@swc/cli": 0.1.62
