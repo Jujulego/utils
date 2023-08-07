@@ -1,4 +1,5 @@
 import { Listener } from '@jujulego/event-tree';
+import { vi } from 'vitest';
 
 import { Query, queryfy, QueryState, QueryStateDone, QueryStateFailed } from '@/src/query';
 
@@ -17,7 +18,7 @@ beforeEach(() => {
   query = new Query();
 
   // Events
-  resultSpy = jest.fn();
+  resultSpy = vi.fn();
   query.subscribe(resultSpy);
 });
 
@@ -110,8 +111,8 @@ describe('Query.then', () => {
     });
 
     it('should call onFulfilled callback', () => {
-      const onFulfilled = jest.fn<void, [number]>();
-      const onRejected = jest.fn<void, [Error]>();
+      const onFulfilled = vi.fn<[number], void>();
+      const onRejected = vi.fn<[Error], void>();
       query.then(onFulfilled, onRejected);
 
       query.done(42);
@@ -126,7 +127,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       query.done(42);
@@ -146,7 +147,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       query.done(42);
@@ -181,7 +182,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       query.done(25);
@@ -203,7 +204,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       query.done(25);
@@ -229,8 +230,8 @@ describe('Query.then', () => {
     it('should call onFulfilled callback', async () => {
       query.done(42);
 
-      const onFulfilled = jest.fn<void, [number]>();
-      const onRejected = jest.fn<void, [Error]>();
+      const onFulfilled = vi.fn<[number], void>();
+      const onRejected = vi.fn<[Error], void>();
       query.then(onFulfilled, onRejected);
 
       await flushPromises();
@@ -247,7 +248,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       await flushPromises();
@@ -269,7 +270,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       await flushPromises();
@@ -307,7 +308,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       await flushPromises();
@@ -331,7 +332,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       await flushPromises();
@@ -360,8 +361,8 @@ describe('Query.then', () => {
     });
 
     it('should call onRejected callback', () => {
-      const onFulfilled = jest.fn<void, [number]>();
-      const onRejected = jest.fn<void, [Error]>();
+      const onFulfilled = vi.fn<[number], void>();
+      const onRejected = vi.fn<[Error], void>();
       query.then(onFulfilled, onRejected);
 
       query.fail(error);
@@ -376,7 +377,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       query.fail(error);
@@ -396,7 +397,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       query.fail(error);
@@ -431,7 +432,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       query.fail(error);
@@ -453,7 +454,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       query.fail(error);
@@ -485,8 +486,8 @@ describe('Query.then', () => {
     it('should call onRejected callback', async () => {
       query.fail(error);
 
-      const onFulfilled = jest.fn<void, [number]>();
-      const onRejected = jest.fn<void, [Error]>();
+      const onFulfilled = vi.fn<[number], void>();
+      const onRejected = vi.fn<[Error], void>();
       query.then(onFulfilled, onRejected);
 
       await flushPromises();
@@ -503,7 +504,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       await flushPromises();
@@ -525,7 +526,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       await flushPromises();
@@ -563,7 +564,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       await flushPromises();
@@ -587,7 +588,7 @@ describe('Query.then', () => {
       expect(res).toBeInstanceOf(Query);
       expect(res.status).toBe('pending');
 
-      const spy: Listener<QueryState> = jest.fn();
+      const spy: Listener<QueryState> = vi.fn();
       res.subscribe(spy);
 
       await flushPromises();
@@ -606,7 +607,7 @@ describe('Query.then', () => {
 describe('Query.cancel', () => {
   it('should call abort on controller', () => {
     const err = new Error('Cancel !');
-    jest.spyOn(query.controller, 'abort');
+    vi.spyOn(query.controller, 'abort');
 
     query.cancel(err);
     expect(query.controller.abort).toHaveBeenCalledWith(err);

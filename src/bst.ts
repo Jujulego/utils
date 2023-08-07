@@ -87,8 +87,8 @@ export class BST<T, K = T> {
 
     // - before
     for (let i = idx - 1; i >= 0; --i) {
-      if (this._comparator(this._extractor(this._array[i]), key) === 0) {
-        yield [i, this._array[i]];
+      if (this._comparator(this._extractor(this.item(i)), key) === 0) {
+        yield [i, this.item(i)];
       } else {
         break;
       }
@@ -96,8 +96,8 @@ export class BST<T, K = T> {
 
     // - after
     for (let i = idx + 1; i < this._array.length; ++i) {
-      if (this._comparator(this._extractor(this._array[i]), key) === 0) {
-        yield [i, this._array[i]];
+      if (this._comparator(this._extractor(this.item(i)), key) === 0) {
+        yield [i, this.item(i)];
       } else {
         break;
       }
@@ -110,7 +110,7 @@ export class BST<T, K = T> {
    * @param i
    */
   item(i: number): T {
-    return this._array[i];
+    return this._array[i]!;
   }
 
   /**
@@ -122,7 +122,7 @@ export class BST<T, K = T> {
 
     // Search ordered index
     const [idx,] = this._searchOne(key);
-    if (this._comparator(this._extractor(this._array[idx]), key) <= 0) {
+    if (this._comparator(this._extractor(this.item(idx)), key) <= 0) {
       return idx + 1;
     }
 
@@ -145,7 +145,7 @@ export class BST<T, K = T> {
       const validate = NEAREST_VALIDATOR[mode];
 
       for (let i = idx; i >= 0; --i) {
-        const obj = this._array[i];
+        const obj = this.item(i);
 
         if (validate(this._comparator(this._extractor(obj), key))) {
           return obj;
@@ -157,7 +157,7 @@ export class BST<T, K = T> {
       const validate = NEAREST_VALIDATOR[mode];
 
       for (let i = idx; i < this._array.length; ++i) {
-        const obj = this._array[i];
+        const obj = this.item(i);
 
         if (validate(this._comparator(this._extractor(obj), key))) {
           return obj;
@@ -206,7 +206,7 @@ export class BST<T, K = T> {
 
       if (mode === 'before') {
         for (; idx > 0; --idx) {
-          const obj = this._array[idx - 1];
+          const obj = this.item(idx - 1);
 
           if (this._comparator(this._extractor(obj), key) < 0) {
             break;
@@ -214,7 +214,7 @@ export class BST<T, K = T> {
         }
       } else if (mode === 'after') {
         for (; idx < this._array.length; ++idx) {
-          const obj = this._array[idx];
+          const obj = this.item(idx);
 
           if (this._comparator(this._extractor(obj), key) > 0) {
             break;
@@ -273,7 +273,7 @@ export class BST<T, K = T> {
     }
 
     for (; idx > 0; idx--) {
-      const obj = this._array[idx];
+      const obj = this.item(idx);
 
       if (this._comparator(this._extractor(obj), key) < 0) {
         break;

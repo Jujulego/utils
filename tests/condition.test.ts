@@ -1,5 +1,6 @@
 import { Listener } from '@jujulego/event-tree';
-import util from 'util';
+import util from 'node:util';
+import { vi } from 'vitest';
 
 import { Condition } from '@/src/condition';
 
@@ -15,7 +16,7 @@ beforeEach(() => {
   condition = new Condition(() => value === 1);
 
   // Events
-  resultSpy = jest.fn();
+  resultSpy = vi.fn();
   condition.subscribe(resultSpy);
 });
 

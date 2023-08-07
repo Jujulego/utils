@@ -8,9 +8,9 @@
 .pnp.*
 
 # Generated files
+.vitest
+coverage
 dist
+eslint-results.sarif
 *.log
 *.pid
-
-# Tests
-coverage

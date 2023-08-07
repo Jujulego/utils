@@ -94,7 +94,7 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
             break;
         }
       } catch (err) {
-        result.fail(err);
+        result.fail(err as Error);
       }
     };
 
