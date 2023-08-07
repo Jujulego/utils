@@ -5,7 +5,7 @@ const numbers = [1, 2, 2, 2, 4, 5];
 let bst: BST<number>;
 
 beforeEach(() => {
-  bst = BST.fromArray(numbers, n => n, (a, b) => a - b);
+  bst = BST.from(numbers, n => n, (a, b) => a - b);
 });
 
 // Tests suites

@@ -1,4 +1,5 @@
 import util from 'node:util';
+import { vi } from 'vitest';
 
 import { Lock } from '@/src/lock';
 
@@ -38,7 +39,7 @@ describe('Lock', () => {
 
 describe('Lock.with', () => {
   it('should acquire before calling fn and release it after', async () => {
-    const fn = jest.fn(() => {
+    const fn = vi.fn(() => {
       expect(lock.locked).toBe(true);
       return 'test';
     });
@@ -50,7 +51,7 @@ describe('Lock.with', () => {
   });
 
   it('should release lock if fn fails', async () => {
-    const fn = jest.fn(() => {
+    const fn = vi.fn(() => {
       expect(lock.locked).toBe(true);
       throw new Error('failed');
     });
