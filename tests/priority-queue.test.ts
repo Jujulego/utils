@@ -1,4 +1,4 @@
-import { PriorityQueue } from '@/src/priority-queue';
+import { PriorityQueue } from '@/src/priority-queue.js';
 
 // Tests
 describe('PriorityQueue.pop', () => {

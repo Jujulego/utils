@@ -1,5 +1,5 @@
-import { Condition } from './condition';
-import { Awaitable } from './types';
+import { Condition } from './condition.js';
+import { Awaitable } from './types.js';
 
 // Class
 export class Lock {
