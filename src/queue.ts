@@ -1,4 +1,4 @@
-import { Condition } from './condition';
+import { Condition } from './condition.js';
 
 // Class
 export class Queue<T> implements AsyncIterable<T> {

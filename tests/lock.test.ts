@@ -1,7 +1,7 @@
 import util from 'node:util';
 import { vi } from 'vitest';
 
-import { Lock } from '@/src/lock';
+import { Lock } from '@/src/lock.js';
 
 // Setup
 let lock: Lock;

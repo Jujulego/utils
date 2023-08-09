@@ -2,7 +2,7 @@ import { Listener } from '@jujulego/event-tree';
 import util from 'node:util';
 import { vi } from 'vitest';
 
-import { Condition } from '@/src/condition';
+import { Condition } from '@/src/condition.js';
 
 // Setup
 let value: number;

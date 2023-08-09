@@ -1,7 +1,7 @@
 import { Listener } from '@jujulego/event-tree';
 import { vi } from 'vitest';
 
-import { Query, queryfy, QueryState, QueryStateDone, QueryStateFailed } from '@/src/query';
+import { Query, queryfy, QueryState, QueryStateDone, QueryStateFailed } from '@/src/query.js';
 
 // Utils
 async function flushPromises() {

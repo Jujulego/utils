@@ -1,5 +1,5 @@
-import { BST } from './bst';
-import { Condition } from './condition';
+import { BST } from './bst.js';
+import { Condition } from './condition.js';
 
 // Types
 export type PriorityOrder = 'highest' | 'lowest';
