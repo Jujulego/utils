@@ -1,4 +1,4 @@
-import { group, IListenable, IObservable, once, source } from '@jujulego/event-tree';
+import { group$, Listenable, Observable, once$, source$ } from '@jujulego/event-tree';
 
 // Types
 export interface QueryStatePending {
@@ -43,13 +43,13 @@ function callbackify<T>(prom: T | PromiseLike<T>, query: Query<T>) {
  *
  * An event is emitted when the query's status changes, with the new query state in the payload.
  */
-export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObservable<QueryStateDone<D> | QueryStateFailed>, PromiseLike<D> {
+export class Query<D = unknown> implements Listenable<QueryEventMap<D>>, Observable<QueryStateDone<D> | QueryStateFailed>, PromiseLike<D> {
   // Attributes
   private _state: QueryState<D> = { status: 'pending' };
 
-  private _events = group({
-    'done': source<QueryStateDone<D>>(),
-    'failed': source<QueryStateFailed>(),
+  private _events = group$({
+    'done': source$<QueryStateDone<D>>(),
+    'failed': source$<QueryStateFailed>(),
   });
 
   // Constructor
@@ -99,7 +99,7 @@ export class Query<D = unknown> implements IListenable<QueryEventMap<D>>, IObser
     };
 
     if (this._state.status === 'pending') {
-      once(this, listener);
+      once$(this, listener);
     } else {
       // Gives time to subscribe to result query
       queueMicrotask(() => listener(this._state));

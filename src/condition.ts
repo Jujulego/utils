@@ -1,4 +1,4 @@
-import { group, IListenable, IObservable, source, waitFor } from '@jujulego/event-tree';
+import { group$, Listenable, Observable, source$, waitFor$ } from '@jujulego/event-tree';
 
 // Types
 export type ConditionEventMap = {
@@ -7,12 +7,12 @@ export type ConditionEventMap = {
 };
 
 // Class
-export class Condition implements IObservable<boolean>, IListenable<ConditionEventMap> {
+export class Condition implements Observable<boolean>, Listenable<ConditionEventMap> {
   // Attributes
   private _value: boolean;
-  private _events = group({
-    'true': source<true>(),
-    'false': source<false>(),
+  private _events = group$({
+    'true': source$<true>(),
+    'false': source$<false>(),
   });
 
   // Constructor
@@ -34,7 +34,7 @@ export class Condition implements IObservable<boolean>, IListenable<ConditionEve
 
   async waitFor(value: boolean): Promise<void> {
     while (this._value !== value) {
-      await waitFor(this._events, `${value}`);
+      await waitFor$(this._events, `${value}`);
     }
   }
 
