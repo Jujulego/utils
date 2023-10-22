@@ -17,7 +17,7 @@ describe('Lock', () => {
   });
 
   it('should be acquired if not locked', async () => {
-    await expect(lock.acquire()).resolves.toBeUndefined();
+    await expect(lock.acquire()).resolves.toBeDefined();
     expect(lock.locked).toBe(true);
   });
 
@@ -32,7 +32,7 @@ describe('Lock', () => {
     lock.release();
     expect(lock.locked).toBe(false);
 
-    await expect(prom).resolves.toBeUndefined();
+    await expect(prom).resolves.toBeDefined();
     expect(lock.locked).toBe(true);
   });
 });
