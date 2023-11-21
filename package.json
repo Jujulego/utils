@@ -33,7 +33,7 @@
   },
   "packageManager": "yarn@3.6.4",
   "dependencies": {
-    "@jujulego/event-tree": "^4.1.0"
+    "kyrielle": "^0.3.0"
   },
   "devDependencies": {
     "@jujulego/jill": "2.3.5",

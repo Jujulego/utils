@@ -468,7 +468,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jujulego/utils@workspace:."
   dependencies:
-    "@jujulego/event-tree": ^4.1.0
     "@jujulego/jill": 2.3.5
     "@jujulego/vite-plugin-swc": 1.1.1
     "@microsoft/eslint-formatter-sarif": 3.0.0
@@ -480,6 +479,7 @@ __metadata:
     "@vitest/coverage-v8": 0.34.6
     eslint: 8.54.0
     eslint-plugin-vitest: 0.3.10
+    kyrielle: ^0.3.0
     shx: 0.3.4
     typescript: 5.2.2
     vite: 5.0.2
@@ -3088,6 +3088,16 @@ __metadata:
   version: 2.0.0
   resolution: "kuler@npm:2.0.0"
   checksum: 9e10b5a1659f9ed8761d38df3c35effabffbd19fc6107324095238e4ef0ff044392cae9ac64a1c2dda26e532426485342226b93806bd97504b174b0dcf04ed81
+  languageName: node
+  linkType: hard
+
+"kyrielle@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "kyrielle@npm:0.3.0"
+  dependenciesMeta:
+    vitest@0.34.6:
+      unplugged: true
+  checksum: ada9c05c78ad817952e89152115743830011e3765e4721c4252f551ce6b777ffcfad95d49d2784b08f7d31408a5dc02461573617b9787a6bcddf5a0ee0495cfa
   languageName: node
   linkType: hard
 
