@@ -1,4 +1,6 @@
-import { group$, Listenable, Observable, source$, waitFor$ } from '@jujulego/event-tree';
+import { Listenable, Observable, source$ } from 'kyrielle';
+import { group$ } from 'kyrielle/events';
+import { waitFor$ } from 'kyrielle/subscriptions';
 
 // Types
 export type ConditionEventMap = {
@@ -25,7 +27,7 @@ export class Condition implements Observable<boolean>, Listenable<ConditionEvent
   readonly off = this._events.off;
   readonly subscribe = this._events.subscribe;
   readonly unsubscribe = this._events.unsubscribe;
-  readonly keys = this._events.keys;
+  readonly eventKeys = this._events.eventKeys;
   readonly clear = this._events.clear;
 
   check(): void {

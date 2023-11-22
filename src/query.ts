@@ -1,4 +1,6 @@
-import { group$, Listenable, Observable, once$, source$ } from '@jujulego/event-tree';
+import { Listenable, Observable, source$ } from 'kyrielle';
+import { group$ } from 'kyrielle/events';
+import { once$ } from 'kyrielle/subscriptions';
 
 // Types
 export interface QueryStatePending {
@@ -64,7 +66,7 @@ export class Query<D = unknown> implements Listenable<QueryEventMap<D>>, Observa
   readonly off = this._events.off;
   readonly subscribe = this._events.subscribe;
   readonly unsubscribe = this._events.unsubscribe;
-  readonly keys = this._events.keys;
+  readonly eventKeys = this._events.eventKeys;
   readonly clear = this._events.clear;
 
   then<RF = D, RR = never>(
