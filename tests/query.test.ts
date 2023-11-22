@@ -1,4 +1,4 @@
-import { Listener } from '@jujulego/event-tree';
+import { Listener } from 'kyrielle';
 import { vi } from 'vitest';
 
 import { Query, queryfy, QueryState, QueryStateDone, QueryStateFailed } from '@/src/query.js';
