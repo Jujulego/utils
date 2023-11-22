@@ -1,42 +1,36 @@
 import { Condition } from './condition.js';
 import { Awaitable } from './types.js';
 
-// Types
-export interface LockHolder extends Disposable {
-  release(): void;
-}
-
 // Class
-export class Lock {
+export class Lock implements Disposable {
   // Attributes
   private _count = 0;
   private readonly _locked = new Condition(() => this._count > 0);
 
   // Methods
-  async acquire(): Promise<LockHolder> {
+  async acquire(): Promise<this> {
     await this._locked.waitFor(false);
 
     this._count++;
     this._locked.check();
 
-    return {
-      release: () => this.release(),
-      [Symbol.dispose]: () => this.release(),
-    };
+    return this;
   }
 
   release(): void {
-    this._count--;
+    this._count = Math.max(this._count - 1, 0);
     this._locked.check();
   }
 
   async with<R>(fn: () => Awaitable<R>): Promise<R> {
-    try {
-      await this.acquire();
-      return await fn();
-    } finally {
-      this.release();
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    using _ = await this.acquire();
+
+    return fn();
+  }
+
+  [Symbol.dispose](): void {
+    this.release();
   }
 
   // Properties
