@@ -33,7 +33,7 @@
   },
   "packageManager": "yarn@3.7.0",
   "dependencies": {
-    "kyrielle": "^0.3.0"
+    "kyrielle": "^0.4.0"
   },
   "devDependencies": {
     "@jujulego/jill": "2.3.5",
