@@ -31,7 +31,7 @@
     "test": "vitest run",
     "test:types": "vitest typecheck"
   },
-  "packageManager": "yarn@3.7.0",
+  "packageManager": "yarn@4.0.2",
   "dependencies": {
     "@swc/helpers": "^0.5.3",
     "kyrielle": "^0.4.0"
