@@ -1,4 +1,4 @@
-import { Listener } from '@jujulego/event-tree';
+import { Listener } from 'kyrielle';
 import util from 'node:util';
 import { vi } from 'vitest';
 

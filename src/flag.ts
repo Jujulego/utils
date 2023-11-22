@@ -1,4 +1,4 @@
-import { Observable } from '@jujulego/event-tree';
+import { Observable } from 'kyrielle';
 
 import { Condition } from './condition.js';
 
