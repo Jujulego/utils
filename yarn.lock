@@ -2700,6 +2700,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^10.0.3":
+  version: 10.0.3
+  resolution: "immer@npm:10.0.3"
+  checksum: 282a4f8479a40f7d12b2b3243c095e3e892bf99058e2ffcdd6b8e9fd143e6a90f2717ab9b6c8b97c927ffb8054465c8f647056f41660dbfd672e240cf1063503
+  languageName: node
+  linkType: hard
+
 "import-fresh@npm:^3.2.1, import-fresh@npm:^3.3.0":
   version: 3.3.0
   resolution: "import-fresh@npm:3.3.0"
@@ -3104,12 +3111,14 @@ __metadata:
   linkType: hard
 
 "kyrielle@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "kyrielle@npm:0.5.0"
+  version: 0.5.2
+  resolution: "kyrielle@npm:0.5.2"
+  dependencies:
+    immer: "npm:^10.0.3"
   dependenciesMeta:
     vitest@0.34.6:
       unplugged: true
-  checksum: 39c23c6a4f129104df7fb7fbbe442b5b30392d616f64174e3e63969a06f670f115a13d464a32cade18e23e8c5ddd8199dae60b0d6392f2324f657d84d3d8cdfd
+  checksum: d69982e6886859aaaece3ac321a6f0222b60c0b66786f47dbf168af75f43e035cf2a1b8a7758cbe7e087ab9ec2a79f3a74bd9b99459989c2a38129dddbe4290a
   languageName: node
   linkType: hard
 
