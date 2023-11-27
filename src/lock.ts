@@ -2,19 +2,21 @@ import { Condition } from './condition.js';
 import { Awaitable } from './types.js';
 
 // Class
-export class Lock implements Disposable {
+export class Lock {
   // Attributes
   private _count = 0;
   private readonly _locked = new Condition(() => this._count > 0);
 
   // Methods
-  async acquire(): Promise<this> {
+  async acquire(): Promise<Disposable> {
     await this._locked.waitFor(false);
 
     this._count++;
     this._locked.check();
 
-    return this;
+    return {
+      [Symbol.dispose ?? Symbol.for('Symbol.dispose')]: () => this.release(),
+    };
   }
 
   release(): void {
@@ -27,10 +29,6 @@ export class Lock implements Disposable {
     using _ = await this.acquire();
 
     return fn();
-  }
-
-  [Symbol.dispose](): void {
-    this.release();
   }
 
   // Properties
