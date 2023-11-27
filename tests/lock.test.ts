@@ -1,4 +1,3 @@
-import util from 'node:util';
 import { vi } from 'vitest';
 
 import { Lock } from '@/src/lock.js';
@@ -16,28 +15,11 @@ describe('Lock', () => {
     expect(lock.locked).toBe(false);
   });
 
-  it('should be acquired if not locked', async () => {
-    await expect(lock.acquire()).resolves.toBeDefined();
+  it('should return immediately if not locked', () => {
+    expect(lock.acquire()).toBeDefined();
     expect(lock.locked).toBe(true);
   });
 
-  it('should block next acquires until release is called', async () => {
-    await lock.acquire();
-    const prom = lock.acquire();
-
-    // prom should still be pending
-    expect(util.inspect(prom)).toMatch(/pending/);
-
-    // release lock
-    lock.release();
-    expect(lock.locked).toBe(false);
-
-    await expect(prom).resolves.toBeDefined();
-    expect(lock.locked).toBe(true);
-  });
-});
-
-describe('Lock.with', () => {
   it('should acquire before calling fn and release it after', async () => {
     const fn = vi.fn(() => {
       expect(lock.locked).toBe(true);
@@ -48,6 +30,29 @@ describe('Lock.with', () => {
 
     expect(fn).toHaveBeenCalled();
     expect(lock.locked).toBe(false);
+  });
+
+  it('should call fn only once at a time', async () => {
+    let v = 0;
+
+    const fn = vi.fn(async () => {
+      try {
+        ++v;
+        expect(lock.locked).toBe(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        expect(lock.locked).toBe(true);
+        expect(v).toBe(1);
+      } finally {
+        --v;
+      }
+    });
+
+    await Promise.all([lock.with(fn), lock.with(fn), lock.with(fn)]);
+
+    expect(fn).toHaveBeenCalledTimes(3);
+    expect(v).toBe(0);
   });
 
   it('should release lock if fn fails', async () => {

@@ -1,18 +1,21 @@
-import { Condition } from './condition.js';
+import { source$ } from 'kyrielle';
+import { waitFor$ } from 'kyrielle/subscriptions';
+
 import { Awaitable } from './types.js';
 
 // Class
 export class Lock {
   // Attributes
   private _count = 0;
-  private readonly _locked = new Condition(() => this._count > 0);
+  private _trigger = source$<void>();
 
   // Methods
   async acquire(): Promise<Disposable> {
-    await this._locked.waitFor(false);
+    while (this.locked) {
+      await waitFor$(this._trigger);
+    }
 
     this._count++;
-    this._locked.check();
 
     return {
       [Symbol.dispose ?? Symbol.for('Symbol.dispose')]: () => this.release(),
@@ -20,19 +23,25 @@ export class Lock {
   }
 
   release(): void {
-    this._count = Math.max(this._count - 1, 0);
-    this._locked.check();
+    if (this._count === 0) {
+      throw new Error('You must first acquire a lock before releasing it');
+    }
+
+    this._count--;
+    this._trigger.next();
   }
 
   async with<R>(fn: () => Awaitable<R>): Promise<R> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    using _ = await this.acquire();
-
-    return fn();
+    try {
+      await this.acquire();
+      return await fn();
+    } finally {
+      this.release();
+    }
   }
 
   // Properties
   get locked(): boolean {
-    return this._locked.value;
+    return this._count > 0;
   }
 }

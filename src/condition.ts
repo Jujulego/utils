@@ -13,8 +13,8 @@ export class Condition implements Observable<boolean>, Listenable<ConditionEvent
   // Attributes
   private _value: boolean;
   private _events = group$({
-    'true': source$<true>(),
-    'false': source$<false>(),
+    true: source$<true>(),
+    false: source$<false>(),
   });
 
   // Constructor
