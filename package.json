@@ -1,6 +1,6 @@
 {
   "name": "@jujulego/utils",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "license": "MIT",
   "author": "Julien Capellari <julien.capellari@gmail.com>",
   "repository": {
@@ -25,7 +25,7 @@
   "scripts": {
     "lint": "eslint .",
     "clean": "shx rm -r dist",
-    "build": "jill group 'build:esm // build:types'",
+    "build": "jill run 'build:esm // build:types'",
     "build:esm": "swc -d dist src",
     "build:types": "tsc --project tsconfig.build.json",
     "test": "vitest run",
