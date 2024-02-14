@@ -37,7 +37,7 @@
     "kyrielle": "^0.6.0"
   },
   "devDependencies": {
-    "@jujulego/jill": "2.5.0",
+    "@jujulego/jill": "2.5.1",
     "@jujulego/vite-plugin-swc": "1.1.1",
     "@microsoft/eslint-formatter-sarif": "3.0.0",
     "@swc/cli": "0.3.9",
