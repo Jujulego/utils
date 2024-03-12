@@ -34,7 +34,7 @@
   "packageManager": "yarn@4.0.2",
   "dependencies": {
     "@swc/helpers": "^0.5.3",
-    "kyrielle": "^0.6.0"
+    "kyrielle": "^0.10.0"
   },
   "devDependencies": {
     "@jujulego/jill": "2.5.2",
