@@ -514,7 +514,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:2.1.3"
     eslint: "npm:8.57.1"
     eslint-plugin-vitest: "npm:0.3.26"
-    kyrielle: "npm:^0.6.0"
+    kyrielle: "npm:^2.0.0"
     shx: "npm:0.3.4"
     typescript: "npm:5.5.4"
     vite: "npm:5.4.10"
@@ -602,6 +602,13 @@ __metadata:
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
   checksum: 10c0/5bd7576bb1b38a47a7fc7b51ac9f38748e772beebc56200450c4a817d712232b8f1d3ef70532c80840243c657d491cf6a6be1e3a214cff907645819fdc34aadd
+  languageName: node
+  linkType: hard
+
+"@repeaterjs/repeater@npm:^3.0.5":
+  version: 3.0.6
+  resolution: "@repeaterjs/repeater@npm:3.0.6"
+  checksum: 10c0/c3915e2603927c7d6a9eb09673bc28fc49ab3a86947ec191a74663b33deebee2fcc4b03c31cc663ff27bd6db9e6c9487639b6935e265d601ce71b8c497f5f4a8
   languageName: node
   linkType: hard
 
@@ -3084,6 +3091,19 @@ __metadata:
     vitest@0.34.6:
       unplugged: true
   checksum: 10c0/f2c414fbf1c9ec5896713cfc796d037a4db0dd086fc82e48c9116ee2d04df06fba99ec3b2ad5ba8cbebee55de25752db8dff7185728c047011d74b29a3b672b2
+  languageName: node
+  linkType: hard
+
+"kyrielle@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "kyrielle@npm:2.0.0"
+  dependencies:
+    "@repeaterjs/repeater": "npm:^3.0.5"
+    "@swc/helpers": "npm:^0.5.3"
+  dependenciesMeta:
+    vitest@2.1.3:
+      unplugged: true
+  checksum: 10c0/fed84fd4591c5db0b2264975b66a93a6ce5d1c41022e9460c480a3ce46d400ba97fda9503c5c5135849809ab5895b0ec7eda4d805ae67a03d73051cb55000b22
   languageName: node
   linkType: hard
 
